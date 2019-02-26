@@ -40,13 +40,50 @@ class DoublyLinkedList:
     self.tail = node
 
   def add_to_head(self, value):
-    pass
+    # wrap the input value in a new ListNode
+    new_node = ListNode(value = value)
+    new_node.next = self.head
+    new_node.prev = None
+    # check if we have anything in our linked list
+    if self.head is not None:
+      self.head.prev = new_node
+    self.head = new_node
 
   def remove_from_head(self):
-    pass
+    # check to see if we have an empty list by checking head == None
+    if not self.head:
+      return None
+    # what if only one element, check if self.head.next == None
+    if self.head.next is None:
+      # grab a secon reference to our current head element
+      head = self.head
+      # set self.head and self.tail to None
+      self.head = None
+      self.tail = None
+      # return value of old head element
+      return head.value
+    # if we have multiple elements
+    else:
+      # grab a secon reference to our current head element
+      head = self.head
+      self.delete(head.value)
+      return head.value 
+    
 
   def add_to_tail(self, value):
-    pass
+    # wrap the input value in new node
+    new_node = ListNode(value)
+    # check if anyting in our linked list
+    if not self.head:
+      # list is empty, set both head and tail to the new node
+      self.head = new_node
+      self.tail = new_node
+    else:
+      # list is not empty, add the new node as the tail's 'next' node
+      self.tail.insert_after(new_node)
+      # update 'self.tail' reference
+      self.tail = new_node
+
 
   def remove_from_tail(self):
     pass
@@ -61,4 +98,18 @@ class DoublyLinkedList:
     pass
     
   def get_max(self):
-    pass
+    # check to see if we have an empty list by checking head == None
+    if not self.head:
+      return None
+    # init a `current_node` variable to keep track of where we are in the linked list as we're iterating
+    current_node = self.head
+    max_node = self.head
+    # check while current_node is a valid (non-None) node 
+    while current_node:
+      # check if current node is > max_node, if yes assign current_node to max_node
+      if current_node.value > max_node.value:
+        max_node.value = current_node.value
+      current_node = current_node.next
+    return max_node.value
+
+
