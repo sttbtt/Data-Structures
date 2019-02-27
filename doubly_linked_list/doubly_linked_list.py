@@ -71,31 +71,70 @@ class DoublyLinkedList:
     
 
   def add_to_tail(self, value):
-    # wrap the input value in new node
-    new_node = ListNode(value)
-    # check if anyting in our linked list
-    if not self.head:
-      # list is empty, set both head and tail to the new node
-      self.head = new_node
-      self.tail = new_node
-    else:
-      # list is not empty, add the new node as the tail's 'next' node
-      self.tail.insert_after(new_node)
-      # update 'self.tail' reference
-      self.tail = new_node
+    # # wrap the input value in new node
+    # new_node = ListNode(value)
+    # # check if anyting in our linked list
+    # if not self.head:
+    #   # list is empty, set both head and tail to the new node
+    #   self.head = new_node
+    #   self.tail = new_node
+    # else:
+    #   # list is not empty, add the new node as the tail's 'next' node
+    #   # update 'self.tail' reference
+    self.tail.insert_after(value)
+    self.tail = self.tail.next
+      
 
 
   def remove_from_tail(self):
-    pass
+    # check to see if we have an empty list by checking tail == None
+    if not self.tail:
+      return None
+    # what if only one element, check if self.head.next == None
+    if self.tail.prev is None:
+      # grab a secon reference to our current head element
+      tail = self.tail
+      # set self.head and self.tail to None
+      self.tail = None
+      self.none = None
+      # return value of old tail element
+      return tail.value
+    # if we have multiple elements
+    else:
+      # grab a secon reference to our current tail element
+      tail = self.tail
+      self.delete(tail.value)
+      return tail.value 
 
   def move_to_front(self, node):
-    pass
+    # grab a reference to node
+    node_value = node.value
+    if node == self.head:
+      return
+    else:
+      # delete node
+      node.delete()
+      # move node to head
+      self.add_to_head(node_value)
+      
 
   def move_to_end(self, node):
-    pass
+    # grab a reference to node
+    node_value = node.value
+    if node == self.tail:
+      return
+    else:
+      # delete the node
+      node.delete()
+      # move node to tail
+      self.add_to_tail(node_value)
+
 
   def delete(self, node):
+    # grab a reference to node
+    # delete node
     pass
+
     
   def get_max(self):
     # check to see if we have an empty list by checking head == None
