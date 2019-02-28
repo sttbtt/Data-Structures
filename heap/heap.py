@@ -70,6 +70,10 @@ class Heap:
       # if true swap index and largest and recurse
       self.storage[index], self.storage[largest] = self.storage[largest], self.storage[index]
       self._sift_down(index)
+    # check to see if still a valid max-heap
+    for i in range(self.get_size() - 1):
+      if self.storage[i + 1] > self.storage[i]:
+        self._bubble_up(i + 1)
 
 
 
