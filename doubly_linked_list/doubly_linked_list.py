@@ -12,7 +12,6 @@ class ListNode:
     after this node. Note that this node could already
     have a next node it is point to."""
     def insert_after(self, value):
-        print('insert_after-----------')
         current_next = self.next
         self.next = ListNode(value, self, current_next)
         if current_next:
@@ -47,57 +46,63 @@ class DoublyLinkedList:
 
     def add_to_head(self, value):
         # wrap the input value in a new ListNode
-        new_node = ListNode(value=value)
-        new_node.next = self.head
-        new_node.prev = None
-        # check if we have anything in our linked list
-        if self.head is not None:
+        new_node = ListNode(value, None, None)
+        if not self.head and not self.tail:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next = self.head
             self.head.prev = new_node
-        self.head = new_node
+            self.head = new_node
 
     def remove_from_head(self):
         # check to see if we have an empty list by checking head == None
-        if not self.head:
+        if not self.head and not self.tail:
             return None
         # what if only one element, check if self.head.next == None
-        if self.head.next is None:
+        if self.head == self.tail:
             # grab a secon reference to our current head element
-            head = self.head
+            current_head = self.head
             # set self.head and self.tail to None
             self.head = None
             self.tail = None
             # return value of old head element
-            return head.value
+            return current_head.value
         # if we have multiple elements
-        else:
-            # grab a secon reference to our current head element
-            head = self.head
-            self.delete(head.value)
-            return head.value
+        # grab a secon reference to our current head element
+        current_head = self.head
+        self.head = self.head.next
+        self.head.prev = None
+        return current_head.value
 
     def add_to_tail(self, value):
-        self.tail.insert_after(value)
-        self.tail = self.tail.next
+        new_node = ListNode(value, None, None)
+        if not self.tail and not self.head:
+            self.tail = new_node
+            self.head = new_node
+        else:
+            new_node.prev = self.tail
+            self.tail.next = new_node
+            self.tail = new_node
 
     def remove_from_tail(self):
         # check to see if we have an empty list by checking tail == None
-        if not self.tail:
+        if not self.tail and not self.head:
             return None
         # what if only one element, check if self.head.next == None
-        if self.tail.prev is None:
-            # grab a secon reference to our current head element
-            tail = self.tail
+        if self.head == self.tail:
+            # grab a second reference to our current head element
+            current_tail = self.tail
             # set self.head and self.tail to None
             self.tail = None
-            self.none = None
+            self.head = None
             # return value of old tail element
-            return tail.value
+            return current_tail.value
         # if we have multiple elements
-        else:
-            # grab a secon reference to our current tail element
-            tail = self.tail
-            self.delete(tail.value)
-            return tail.value 
+        current_tail = self.tail
+        self.tail = self.tail.prev
+        self.tail.next = None
+        return current_tail.value 
 
     def move_to_front(self, node):
         # grab a reference to node
@@ -118,14 +123,13 @@ class DoublyLinkedList:
         else:
             # delete the node
             node.delete()
-            print('Delete')
             # move node to tail
             self.add_to_tail(node_value)
 
     def delete(self, node):
         # check if ouir list is completely empty
         if not self.head and not self.tail:
-            return None
+            return
 
         # if oour list has only a single node, then when we delete it
         # both self.head and self.tail should be none
@@ -134,17 +138,17 @@ class DoublyLinkedList:
             self.tail = None
 
         # check if the given node is the head
-        if self.head == node:
+        elif self.head == node:
             # set the self.head point to the net node
             self.head = node.next
             # delete the node
             node.delete()
 
         # check if the given node is the tail
-        if self.tail == node:
+        elif self.tail == node:
             # set the self.tail pointer to the previous node
             self.tail = node.prev
-            # delete the noe
+            # delete the node
             node.delete()
 
         # otherwise, the node we're looking to the delete is in the middle of the list
